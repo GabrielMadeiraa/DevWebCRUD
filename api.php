@@ -48,8 +48,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Rota para excluir um post
+    
     parse_str(file_get_contents("php://input"), $deleteData);
-    $postId = $deleteData['id'];
+    $postId = $deleteData['post_id']; // Corrigido: 'id' para 'post_id'
 
     $sql = "DELETE FROM posts WHERE id = '$postId'";
     if ($conn->query($sql) === true) {
