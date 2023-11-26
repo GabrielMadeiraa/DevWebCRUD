@@ -46,6 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo "Erro ao criar o post: " . $conn->error;
         }
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    // Rota para excluir um post
+    parse_str(file_get_contents("php://input"), $deleteData);
+    $postId = $deleteData['id'];
+
+    $sql = "DELETE FROM posts WHERE id = '$postId'";
+    if ($conn->query($sql) === true) {
+        http_response_code(200);
+    } else {
+        http_response_code(500);
+        echo "Erro ao excluir o post: " . $conn->error;
+    }
 }
 
 $conn->close();
