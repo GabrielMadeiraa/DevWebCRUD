@@ -59,6 +59,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         http_response_code(500);
         echo "Erro ao excluir o post: " . $conn->error;
     }
+}elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    // Rota para editar um post
+    parse_str(file_get_contents("php://input"), $editData);
+    $postId = $editData['post_id']; // ID do post a ser editado
+    $title = $editData['title']; // Novo título do post
+    $content = $editData['content']; // Novo conteúdo do post
+
+    $sql = "UPDATE posts SET title = '$title', content = '$content' WHERE id = '$postId'";
+    if ($conn->query($sql) === true) {
+        http_response_code(200);
+    } else {
+        http_response_code(500);
+        echo "Erro ao editar o post: " . $conn->error;
+    }
 }
 
 $conn->close();
