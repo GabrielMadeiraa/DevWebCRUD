@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     // Acesso aos dados enviados
-        if (isset($data['action']) && $data['action'] === 'registro') {
+        if (isset($data['action']) && $data['action'] === 'create_registro') {
 
             $nome = $data['nome'];
             $email = $data['email'];
