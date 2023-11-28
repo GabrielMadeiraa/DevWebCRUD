@@ -4,7 +4,6 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "blog";
-
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Erro na conexão com o banco de dados: " . $conn->connect_error);
@@ -45,6 +44,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             http_response_code(500);
             echo "Erro ao criar o post: " . $conn->error;
         }
+    }    if (isset($_POST['action']) && $_POST['action'] === 'create_registro') {
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $idade = $_POST['idade'];
+        $equipe = $_POST['equipe'];
+        $comentario = $_POST['comentario'];
+        $numero = $_POST['numero'];
+        $cor = $_POST['cor'];
+        $piloto = $_POST['piloto'];
+
+        $sql = "INSERT INTO registros (nome, email, idade, equipe, comentario, numero, cor, piloto) VALUES ('$nome', '$email', '$idade', '$equipe', '$comentario', '$numero', '$cor', '$piloto')";
+
+        if ($conn->query($sql) === true) {
+            http_response_code(201);
+            echo "Registro criado com sucesso!";
+        } else {
+            http_response_code(500);
+            echo "Erro ao criar o registro: " . $conn->error;
+        }
+    } else {
+        http_response_code(400);
+        echo "Todos os campos do formulário devem ser preenchidos.";
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Rota para excluir um post
@@ -73,30 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         http_response_code(500);
         echo "Erro ao editar o post: " . $conn->error;
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Rota para criar um novo registro com os dados do formulário
-    if (isset($_POST['action']) && $_POST['action'] === 'create_registro') {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $idade = $_POST['idade'];
-        $equipe = $_POST['equipe'];
-        $comentario = $_POST['comentario'];
-        $numero = $_POST['numero'];
-        $cor = $_POST['cor'];
-        $piloto = $_POST['piloto'];
-
-        $sql = "INSERT INTO registros (nome, email, idade, equipe, comentario, numero, cor, piloto) VALUES ('$nome', '$email', '$idade', '$equipe', '$comentario', '$numero', '$cor', '$piloto')";
-
-        if ($conn->query($sql) === true) {
-            http_response_code(201);
-            echo "Registro criado com sucesso!";
-        } else {
-            http_response_code(500);
-            echo "Erro ao criar o registro: " . $conn->error;
-        }
-    }
 }
-
 
 $conn->close();
 ?>
