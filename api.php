@@ -45,23 +45,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             echo "Erro ao criar o post: " . $conn->error;
         }
     } else {
-        $nome = $_POST['nome'];
-        $email = $_POST['email'];
-        $idade = $_POST['idade'];
-        $equipe = $_POST['equipe'];
-        $comentario = $_POST['comentario'];
-        $numero = $_POST['numero'];
-        $cor = $_POST['cor'];
-        $piloto = $_POST['piloto'];
+    $json = file_get_contents('php://input');
+    $data = json_decode($json, true);
+    // Acesso aos dados enviados
+        if (isset($data['action']) && $data['action'] === 'registro') {
 
-        $sql = "INSERT INTO registros (nome, email, idade, equipe, comentario, numero, cor, piloto) VALUES ('$nome', '$email', '$idade', '$equipe', '$comentario', '$numero', '$cor', '$piloto')";
+            $nome = $data['nome'];
+            $email = $data['email'];
+            $idade = $data['idade'];
+            $equipe = $data['equipe'];
+            $comentario = $data['comentario'];
+            $numero = $data['numero'];
+            $cor = $data['cor'];
+            $piloto = $data['piloto'];
 
-        if ($conn->query($sql) === true) {
-            http_response_code(201);
-            echo "Registro criado com sucesso!";
-        } else {
-            http_response_code(500);
-            echo "Erro ao criar o registro: " . $conn->error;
+            $sql = "INSERT INTO registros (nome, email, idade, equipe, comentario, numero, cor, piloto) VALUES ('$nome', '$email', '$idade', '$equipe', '$comentario', '$numero', '$cor', '$piloto')";
+
+            if ($conn->query($sql) === true) {
+                http_response_code(201);
+                echo "Registro criado com sucesso!";
+            } else {
+                http_response_code(500);
+                echo "Erro ao criar o registro: " . $conn->error;
+            }
         }
     } 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
