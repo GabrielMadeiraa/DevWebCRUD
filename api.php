@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             http_response_code(500);
             echo "Erro ao criar o post: " . $conn->error;
         }
-    }    if (isset($_POST['action']) && $_POST['action'] === 'create_registro') {
+    } else {
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $idade = $_POST['idade'];
@@ -63,10 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             http_response_code(500);
             echo "Erro ao criar o registro: " . $conn->error;
         }
-    } else {
-        http_response_code(400);
-        echo "Todos os campos do formulário devem ser preenchidos.";
-    }
+    } 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     // Rota para excluir um post
     
