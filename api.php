@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_POST['action']) && $_POST['action'] === 'create_post') {
         $title = $_POST['title'];
         $content = $_POST['content'];
-
-        $sql = "INSERT INTO posts (title, content) VALUES ('$title', '$content')";
+        $currentDateTime = date('Y-m-d H:i:s');
+        $sql ="INSERT INTO posts (title, content, created_at,updated_at) VALUES ('$title', '$content', '$currentDateTime','$currentDateTime')";
         if ($conn->query($sql) === true) {
             http_response_code(201);
         } else {
@@ -89,8 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $postId = $editData['post_id']; // ID do post a ser editado
     $title = $editData['title']; // Novo título do post
     $content = $editData['content']; // Novo conteúdo do post
+    $currentDateTime = date('Y-m-d H:i:s');
 
-    $sql = "UPDATE posts SET title = '$title', content = '$content' WHERE id = '$postId'";
+    $sql = "UPDATE posts SET title = '$title', content = '$content', updated_at = '$currentDateTime' WHERE id = '$postId'";
     if ($conn->query($sql) === true) {
         http_response_code(200);
     } else {
